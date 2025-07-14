@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malla Curricular Medicina</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+    }
+    .year {
+      margin-bottom: 2rem;
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .subject {
+      margin: 0.5rem 0;
+    }
+    .toggle-btn {
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.3rem 0.7rem;
+      cursor: pointer;
+      margin-left: 1rem;
+    }
+    .requirements {
+      margin-left: 2rem;
+      display: none;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Curricular de Medicina</h1>
+  <div id="malla"></div>
+
+  <script>
+    const data = {
+      "Primer Año": [
+        { nombre: "Anatomía", regimen: "Anual" },
+        { nombre: "Biología", regimen: "Anual" },
+        { nombre: "Ciencias Sociales y Medicina", regimen: "Cuatrimestral" },
+        { nombre: "Citología, Histología y Embriología", regimen: "Anual" },
+        { nombre: "Informática Básica", regimen: "Bimestral" },
+        { nombre: "Ciencias Exactas (Optativa)", regimen: "Cuatrimestral" },
+        { nombre: "Seminario en Investigación Científica (Optativa)", regimen: "Cuatrimestral" }
+      ],
+      "Segundo Año": [
+        { nombre: "Bioquímica y Biología Molecular", regimen: "Anual", requisitos: ["Final de Biología", "Final de Histología"] },
+        { nombre: "Epidemiología", regimen: "Bimestral", requisitos: ["Cursada y Final de Ciencias Sociales y Medicina"] },
+        { nombre: "Fisiología y Física Biológica", regimen: "Anual", requisitos: ["Cursadas de Anatomía y Biología", "Final de Histología", "Final de Biología"] },
+        { nombre: "Psicología Médica", regimen: "Bimestral", requisitos: ["Cursada y Final de Anatomía"] },
+        { nombre: "Ecología Humana y Promoción de la Salud (Optativa)", regimen: "Bimestral" },
+        { nombre: "Historia de la Medicina (Optativa)", regimen: "Bimestral" }
+      ]
+      // Puedes seguir agregando años y materias aquí
+    };
+
+    const container = document.getElementById("malla");
+
+    for (const [anio, materias] of Object.entries(data)) {
+      const yearDiv = document.createElement("div");
+      yearDiv.className = "year";
+
+      const title = document.createElement("h2");
+      title.textContent = anio;
+      yearDiv.appendChild(title);
+
+      materias.forEach((mat, idx) => {
+        const matDiv = document.createElement("div");
+        matDiv.className = "subject";
+
+        const span = document.createElement("span");
+        span.textContent = `${mat.nombre} (${mat.regimen})`;
+        matDiv.appendChild(span);
+
+        if (mat.requisitos) {
+          const btn = document.createElement("button");
+          btn.textContent = "+";
+          btn.className = "toggle-btn";
+
+          const req = document.createElement("div");
+          req.className = "requirements";
+          req.innerHTML = `<ul>${mat.requisitos.map(r => `<li>${r}</li>`).join('')}</ul>`;
+
+          btn.onclick = () => {
+            req.style.display = req.style.display === "none" ? "block" : "none";
+          };
+
+          matDiv.appendChild(btn);
+          matDiv.appendChild(req);
+        }
+
+        yearDiv.appendChild(matDiv);
+      });
+
+      container.appendChild(yearDiv);
+    }
+  </script>
+</body>
+</html>
